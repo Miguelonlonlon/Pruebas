@@ -28,5 +28,5 @@ trigger:
 action:
 - service: climate.set_hvac_mode
   data:
-    hvac_mode: { ? { hvac_to_send } }
+    hvac_mode: "{{ hvac_to_send }}"
   target: !input climate_target
