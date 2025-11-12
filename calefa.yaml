@@ -14,19 +14,17 @@ blueprint:
         target:
           entity:
             domain: climate
-variables:
-  schedule_var: !input schedule_entity
-  hvac_to_send: >-
-    {%- if is_state("schedule_var", "on") %}
-      heat
-    {% else %}
-      off
-    {% endif -%}
+
 trigger:
   platform: state
   entity_id: !input schedule_entity
 action:
 - service: climate.set_hvac_mode
   data:
-    hvac_mode: "{{ hvac_to_send }}"
+    hvac_mode: >-
+    {%- if is_state("!input schedule_entity", "on") %}
+      heat
+    {% else %}
+      off
+    {% endif -%}
   target: !input climate_target
