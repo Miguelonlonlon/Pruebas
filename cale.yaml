@@ -17,7 +17,7 @@ blueprint:
 variables:
   schedule_var: !input schedule_entity
   hvac_to_send: >-
-    {%- if states.schedule_var.entity_id.state == 'on' %}
+    {%- if states.schedule_var.state == on %}
       heat
     {% else %}
       off
