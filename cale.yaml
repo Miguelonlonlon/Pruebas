@@ -1,24 +1,30 @@
 blueprint:
-  name: Schedule-activated Switch
-    description: Turn on and off a switch by schedule.
-      domain: automation
-        input:
-            schedule_entity:
-                  name: Schedule
-                        selector:
-                                entity:
-                                          domain: schedule
-                                              switch_target:
-                                                    name: Switch
-                                                          selector:
-                                                                  target:
-                                                                            entity:
-                                                                                        domain: switch
+  name: Schedule-activated Climate
+  description: Regula el modo de trabajo de la caldera con programación.
+  domain: automation
+  input:
+    schedule_entity:
+      name: Schedule
+      selector:
+        entity:
+          domain: schedule
+    climate_target:
+      name: Climate
+      selector:
+        target:
+          entity:
+            domain: climate
+  variables:
+    schedule_var: !input schedule_entity
+    climate_var: !input climate_target
+  trigger:
+    platform: state
+    entity_id: !input schedule_entity
+  action:
+  - service: climate.set_hvac_mode
+    metadata:
+    data:
+      hvac_mode: "{%- if (states.schedule_var.entity_id.state | lower)=='on' %}heat{% else %}off{% endif -%}"
+    target: !input climate_target
 
-                                                                                        trigger:
-                                                                                          platform: state
-                                                                                            entity_id: !input schedule_entity
-                                                                                            action:
-                                                                                              - service: homeassistant.turn_{{ trigger.to_state.state }}
-                                                                                                  target: !input switch_target
-                                                                                                  mode: single
+  mode: single
