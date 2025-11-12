@@ -14,17 +14,16 @@ blueprint:
         target:
           entity:
             domain: climate
-  variables:
-    schedule_var: !input schedule_entity
-    climate_var: !input climate_target
-  trigger:
-    platform: state
-    entity_id: !input schedule_entity
-  action:
-  - service: climate.set_hvac_mode
-    metadata:
-    data:
-      hvac_mode: "{%- if (states.schedule_var.entity_id.state | lower)=='on' %}heat{% else %}off{% endif -%}"
-    target: !input climate_target
-
   mode: single
+variables:
+  schedule_var: !input schedule_entity
+  climate_var: !input climate_target
+trigger:
+  platform: state
+  entity_id: !input schedule_entity
+action:
+- service: climate.set_hvac_mode
+  metadata:
+  data:
+    hvac_mode: "{%- if (states.schedule_var.entity_id.state | lower)=='on' %}heat{% else %}off{% endif -%}"
+  target: !input climate_target
