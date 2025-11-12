@@ -14,7 +14,7 @@ blueprint:
         target:
           entity:
             domain: climate
-  mode: single
+mode: single
 variables:
   schedule_var: !input schedule_entity
   climate_var: !input climate_target
