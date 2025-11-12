@@ -22,7 +22,7 @@ action:
 - service: climate.set_hvac_mode
   data:
     hvac_mode: >-
-    {%- if is_state("!input schedule_entity", "on") %}
+    {%- if is_state("{{ !input schedule_entity }}", "on") %}
       heat
     {% else %}
       off
