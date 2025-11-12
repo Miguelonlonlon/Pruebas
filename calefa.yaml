@@ -21,10 +21,10 @@ trigger:
 action:
 - service: climate.set_hvac_mode
   data:
-    hvac_mode: >-
-    {%- if is_state("{{ !input schedule_entity }}", "on") %}
-      heat
-    {% else %}
-      off
-    {% endif -%}
+    hvac_mode: |-
+      {%- if is_state("{{ !input schedule_entity }}", "on") %}
+        heat
+      {% else %}
+        off
+      {% endif -%}
   target: !input climate_target
